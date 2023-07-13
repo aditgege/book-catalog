@@ -3,14 +3,14 @@ import BookItem from './BookItem/BookItem';
 import Pagination from './Pagination/Pagination';
 import { Book } from '../../types';
 import './BookList.scss';
+
 interface BookListProps {
   books: Book[];
   favorites: string[];
-  onBookClick: (book: Book) => void;
   onFavoriteToggle: (bookId: string) => void;
 }
 
-const BookList: React.FC<BookListProps> = ({ books, favorites, onBookClick, onFavoriteToggle }) => {
+const BookList: React.FC<BookListProps> = ({ books, favorites, onFavoriteToggle }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const totalItems = books.length;
@@ -27,17 +27,16 @@ const BookList: React.FC<BookListProps> = ({ books, favorites, onBookClick, onFa
   return (
     <div>
       <div className="book-list">
-        {currentItems.map(book => (
+        {currentItems.map((book) => (
           <BookItem
             key={book.id}
             book={book}
             isFavorite={favorites.includes(book.id)}
-            onBookClick={onBookClick}
             onFavoriteToggle={onFavoriteToggle}
           />
         ))}
       </div>
-      <div className='book-list-pagination'>
+      <div className="book-list-pagination">
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

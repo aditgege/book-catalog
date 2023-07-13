@@ -10,7 +10,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
-    <div className="pagination">
+    <div data-testid="pagination" className="pagination">
       {pageNumbers.map(pageNumber => (
         <button
           key={pageNumber}

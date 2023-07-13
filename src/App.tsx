@@ -1,28 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useBookList} from './hooks/useBookApi';
 import BookList from './components/BookList/BookList';
-import useBookData from './hooks/useBookData';
-import { Book } from './types';
+import BookDetail from './components/BookDetails/BookDetails';
 import './App.scss';
 
 const App: React.FC = () => {
   const [favorites, setFavorites] = useState<string[]>([]);
-  const { data: books, error } = useBookData();
+  const { books, isError } = useBookList();
 
-  const handleBookClick = (book: Book) => {
-    // setSelectedBook(book);
-  };
-
-  const handleFavoriteToggle = (bookId: string) => {
-    if (favorites.includes(bookId)) {
-      setFavorites((prevFavorites) => prevFavorites.filter((id) => id !== bookId));
-    } else {
-      setFavorites((prevFavorites) => [...prevFavorites, bookId]);
-    }
-  };
-
+  
+  
   useEffect(() => {
     const favoritesFromStorage = localStorage.getItem('favorites');
-
     if (favoritesFromStorage) {
       setFavorites(JSON.parse(favoritesFromStorage));
     }
@@ -34,26 +24,43 @@ const App: React.FC = () => {
     }
   }, [favorites]);
 
-  if (error) {
+  
+
+  const handleFavoriteToggle = (bookId: string) => {
+    if (favorites.includes(bookId)) {
+      setFavorites((prevFavorites) => prevFavorites.filter((id) => id !== bookId));
+    } else {
+      setFavorites((prevFavorites) => [...prevFavorites, bookId]);
+    }
+  };
+
+  if (isError) {
     return <div>Error fetching books</div>;
   }
 
+
   return (
-    <div className="app">
-      <h1>Book App</h1>
-      <div className="container">
-        {books ? (
-          <BookList
-            books={books}
-            favorites={favorites}
-            onBookClick={handleBookClick}
-            onFavoriteToggle={handleFavoriteToggle}
-          />
-        ) : (
-          <div>Loading books...</div>
-        )}
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={
+          <div className="app">
+            <h1>Book App</h1>
+            <div className="container">
+              {books ? (
+                <BookList
+                  books={books}
+                  favorites={favorites}
+                  onFavoriteToggle={handleFavoriteToggle}
+                />
+              ) : (
+                <div>Loading books...</div>
+              )}
+            </div>
+          </div>
+        } />
+        <Route path="/book/:id" element={<BookDetail />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

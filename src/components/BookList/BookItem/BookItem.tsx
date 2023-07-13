@@ -1,25 +1,27 @@
+
 import React, { useState } from 'react';
-import FavoriteButton from '../../FavoriteButton/FavoriteButton';
+import { useNavigate } from 'react-router-dom'
 import { createExcerpt } from '../../../utils/helpers';
 import { Book } from '../../../types';
+import FavoriteButton from '../../FavoriteButton/FavoriteButton';
 import './BookItem.scss';
 
 interface BookItemProps {
   book: Book;
   isFavorite: boolean;
-  onBookClick: (book: Book) => void;
   onFavoriteToggle: (bookId: string) => void;
 }
 
-const BookItem: React.FC<BookItemProps> = ({ book, isFavorite, onBookClick, onFavoriteToggle }) => {
+const BookItem: React.FC<BookItemProps> = ({ book, isFavorite, onFavoriteToggle }) => {
   const [imageError, setImageError] = useState(false);
+  const navigate = useNavigate();
 
   const handleImageError = () => {
     setImageError(true);
   };
 
   const handleClick = () => {
-    onBookClick(book);
+    navigate(`/book/${book.id}`);
   };
 
   const handleFavoriteToggle = () => {
@@ -30,7 +32,7 @@ const BookItem: React.FC<BookItemProps> = ({ book, isFavorite, onBookClick, onFa
   const description = createExcerpt(book.description, 50);
 
   return (
-    <div className="book-item">
+    <div data-testid="book-item" className="book-item" onClick={handleClick}>
       <img src={imageSrc} alt={book.title} onError={handleImageError} />
       <div className="flex flex-column">
         <div className="book-item-content">

@@ -6,3 +6,5 @@ export interface Book {
   cover: string;
   publicationDate: string;
 }
+
+

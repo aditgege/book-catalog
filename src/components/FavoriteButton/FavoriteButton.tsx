@@ -7,7 +7,7 @@ interface FavoriteButtonProps {
 
 const FavoriteButton: React.FC<FavoriteButtonProps> = ({ isFavorite, onToggle }) => {
   return (
-    <button style={
+    <button data-testid="favorite-button" style={
       {
         border: 'none',
         cursor: 'pointer',
