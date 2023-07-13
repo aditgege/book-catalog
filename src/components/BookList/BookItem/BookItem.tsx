@@ -15,7 +15,9 @@ interface BookItemProps {
 const BookItem: React.FC<BookItemProps> = ({ book, isFavorite, onFavoriteToggle }) => {
   const [imageError, setImageError] = useState(false);
   const navigate = useNavigate();
-
+  const imageSrc = imageError ? '/img-notfound.jpg' : book.cover;
+  const description = createExcerpt(book.description, 50);
+  
   const handleImageError = () => {
     setImageError(true);
   };
@@ -28,8 +30,6 @@ const BookItem: React.FC<BookItemProps> = ({ book, isFavorite, onFavoriteToggle 
     onFavoriteToggle(book.id);
   };
 
-  const imageSrc = imageError ? '/img-notfound.jpg' : book.cover;
-  const description = createExcerpt(book.description, 50);
 
   return (
     <div data-testid="book-item" className="book-item" onClick={handleClick}>

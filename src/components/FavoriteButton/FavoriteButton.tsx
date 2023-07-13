@@ -6,9 +6,15 @@ interface FavoriteButtonProps {
 }
 
 const FavoriteButton: React.FC<FavoriteButtonProps> = ({ isFavorite, onToggle }) => {
+  function handleFavoriteToggle(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    onToggle();
+  }
+
   return (
-    <button data-testid="favorite-button" style={
-      {
+    <button
+      data-testid="favorite-button"
+      style={{
         border: 'none',
         cursor: 'pointer',
         borderRadius: '100%',
@@ -19,8 +25,9 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ isFavorite, onToggle })
         height: '30px',
         backgroundColor: 'black',
         color: 'white'
-      }
-    } onClick={onToggle}>
+      }}
+      onClick={handleFavoriteToggle}
+    >
       {isFavorite ? '❤️' : '♡'}
     </button>
   );

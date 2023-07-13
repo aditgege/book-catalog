@@ -9,8 +9,6 @@ const App: React.FC = () => {
   const [favorites, setFavorites] = useState<string[]>([]);
   const { books, isError } = useBookList();
 
-  
-  
   useEffect(() => {
     const favoritesFromStorage = localStorage.getItem('favorites');
     if (favoritesFromStorage) {
@@ -23,8 +21,6 @@ const App: React.FC = () => {
       localStorage.setItem('favorites', JSON.stringify(favorites));
     }
   }, [favorites]);
-
-  
 
   const handleFavoriteToggle = (bookId: string) => {
     if (favorites.includes(bookId)) {
@@ -58,7 +54,7 @@ const App: React.FC = () => {
             </div>
           </div>
         } />
-        <Route path="/book/:id" element={<BookDetail />} />
+        <Route path="/book/:id" element={<BookDetail onFavoriteToggle={handleFavoriteToggle} favorites={favorites} />} />
       </Routes>
     </BrowserRouter>
   );
